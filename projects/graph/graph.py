@@ -87,18 +87,61 @@ class Graph:
         starting_vertex to destination_vertex in
         breath-first order.
         """
-        pass  # TODO
+        q = Queue()
+        q.enqueue([starting_vertex])
+        visited = set()
+
+        while q.size():
+            # dequeue path
+            path = q.dequeue()
+
+            # get the last vertex in the dequeued path
+            last_vertex = path[-1]
+
+            # if last vertex is not already visited
+            if last_vertex not in visited:
+                # loop through the neighbors of the last_vertex
+                for neighbor in self.vertices[last_vertex]:
+                    # create new path list
+                    new_path = list(path)
+                    # append all the neighbors of current vertex to list
+                    new_path.append(neighbor)
+                    # check if the current neighbor is the destination
+                    if neighbor == destination_vertex:
+                        # return the new path
+                        return new_path
+                    # enqueue the new path
+                    q.enqueue(new_path)
+                # add the last vertex to visited
+                visited.add(last_vertex)
+
     def dfs(self, starting_vertex, destination_vertex):
         """
         Return a list containing a path from
         starting_vertex to destination_vertex in
         depth-first order.
         """
-        pass  # TODO
-
-
-
-
+        s = Stack()
+        s.push(starting_vertex)
+        # create a set to store the visited vertices
+        visited = set()
+        result = []
+        # while the stack is not empty
+        while s.size() > 0:
+            # pop the first vertex
+            v = s.pop()
+            # if that vertex has not been visited
+            if v not in visited:
+                # mark it as visited (printing for a representation)
+                
+                visited.add(v)
+                result.append(v)
+                if v == destination_vertex:
+                    break
+                # then add all of it's neighbors to the top of the stack
+                for next_vertex in self.vertices[v]:
+                    s.push(next_vertex)
+        return result
 
 if __name__ == '__main__':
     graph = Graph()  # Instantiate your graph
@@ -125,7 +168,7 @@ if __name__ == '__main__':
     Should print:
         {1: {2}, 2: {3, 4}, 3: {5}, 4: {6, 7}, 5: {3}, 6: {3}, 7: {1, 6}}
     '''
-    # print(graph.vertices)
+    print(graph.vertices)
 
     '''
     Valid DFT paths:
@@ -134,7 +177,7 @@ if __name__ == '__main__':
         1, 2, 4, 7, 6, 3, 5
         1, 2, 4, 6, 3, 5, 7
     '''
-    # graph.dft(1)
+    graph.dft(1)
 
     '''
     Valid BFT paths:
@@ -151,7 +194,7 @@ if __name__ == '__main__':
         1, 2, 4, 3, 7, 6, 5
         1, 2, 4, 3, 7, 5, 6
     '''
-    # graph.bft(1)
+    graph.bft(1)
 
     '''
     Valid DFT recursive paths:
@@ -160,7 +203,7 @@ if __name__ == '__main__':
         1, 2, 4, 7, 6, 3, 5
         1, 2, 4, 6, 3, 5, 7
     '''
-    # graph.dft_recursive(1)
+    graph.dft_recursive(1)
 
     '''
     Valid BFS path:
@@ -173,4 +216,4 @@ if __name__ == '__main__':
         [1, 2, 4, 6]
         [1, 2, 4, 7, 6]
     '''
-    # print(graph.dfs(1, 6))
+    print(graph.dfs(1, 6))
