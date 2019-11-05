@@ -87,33 +87,36 @@ class Graph:
         starting_vertex to destination_vertex in
         breath-first order.
         """
+        # create a queue
         q = Queue()
+        # enqueue a list holding the starting vertex id
         q.enqueue([starting_vertex])
+        # created an empty visited set
         visited = set()
-
-        while q.size():
-            # dequeue path
+        # while the queue is not empty
+        while q.size() > 0:
+            # dequeue to the path
             path = q.dequeue()
-
-            # get the last vertex in the dequeued path
-            last_vertex = path[-1]
-
-            # if last vertex is not already visited
-            if last_vertex not in visited:
-                # loop through the neighbors of the last_vertex
-                for neighbor in self.vertices[last_vertex]:
-                    # create new path list
+            # set a vert to the last item in the path
+            vert = path[-1]
+            # if vert is not in visited
+            if vert not in visited:
+                # if vert is equal to target value
+                if vert == destination_vertex:
+                    # return path
+                    return path
+                # add vert to visited set
+                visited.add(vert)
+                # loop over next vert in vertices at the index of vert
+                for next_vert in self.vertices[vert]:
+                    # set a new path equal to a new list of the path (copy)
                     new_path = list(path)
-                    # append all the neighbors of current vertex to list
-                    new_path.append(neighbor)
-                    # check if the current neighbor is the destination
-                    if neighbor == destination_vertex:
-                        # return the new path
-                        return new_path
+                    # append next vert to new path
+                    new_path.append(next_vert)
                     # enqueue the new path
                     q.enqueue(new_path)
-                # add the last vertex to visited
-                visited.add(last_vertex)
+        # return None
+        return None
 
     def dfs(self, starting_vertex, destination_vertex):
         """
@@ -121,28 +124,36 @@ class Graph:
         starting_vertex to destination_vertex in
         depth-first order.
         """
+        # create a stack
         s = Stack()
-        s.push(starting_vertex)
-        # create a set to store the visited vertices
+        # push a list holding the starting vertex id
+        s.push([starting_vertex])
+        # created an empty visited set
         visited = set()
-        result = []
-        # while the stack is not empty
+        # while the queue is not empty
         while s.size() > 0:
-            # pop the first vertex
-            v = s.pop()
-            # if that vertex has not been visited
-            if v not in visited:
-                # mark it as visited (printing for a representation)
-                
-                visited.add(v)
-                result.append(v)
-                if v == destination_vertex:
-                    break
-                # then add all of it's neighbors to the top of the stack
-                for next_vertex in self.vertices[v]:
-                    s.push(next_vertex)
-        return result
-
+            # pop to the path
+            path = s.pop()
+            # set a vert to the last item in the path
+            vert = path[-1]
+            # if vert is not in visited
+            if vert not in visited:
+                # if vert is equal to target value
+                if vert == destination_vertex:
+                    # return path
+                    return path
+                # add vert to visited set
+                visited.add(vert)
+                # loop over next vert in vertices at the index of vert
+                for next_vert in self.vertices[vert]:
+                    # set a new path equal to a new list of the path (copy)
+                    new_path = list(path)
+                    # append next vert to new path
+                    new_path.append(next_vert)
+                    # push the new path
+                    s.push(new_path)
+        # return None
+        return None
 if __name__ == '__main__':
     graph = Graph()  # Instantiate your graph
     # https://github.com/LambdaSchool/Graphs/blob/master/objectives/breadth-first-search/img/bfs-visit-order.png
